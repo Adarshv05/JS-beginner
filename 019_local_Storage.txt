@@ -1,0 +1,11 @@
+Local Storage (Code => Console)
+
+localStorage
+
+localStorage.clear()
+
+localStorage.setItem('name','John')
+
+localStorage.getItem('name')
+
+localStorage.removeItem('name')
