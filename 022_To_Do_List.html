@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+   
+
     <title>To-Do-List</title>
   </head>
   <body>
@@ -46,10 +48,23 @@
     </div>
  
     <script>
-        add = document.getElementById("submitbtn")
-        add.addEventlistener("click", ()=>{
-
-        })
+        submitbtn = document.getElementById("submitbtn")
+        submitbtn.addEventListener("click", ()=>{
+          console.log("Updating List")
+          tl = document.getElementById("title").value;
+          dsc = document.getElementById("description").value;
+          if(localStorage.getItem("itemsjson")==null){
+            itemjsonarray = [];
+            itemjsonarray.push([tl, dsc]);
+            localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray))
+          }
+          else{
+            itemjsonarraystr = localStorage.getItem("itemsjson")
+            itemjsonarray = JSON.parse(itemjsonarraystr);
+            itemjsonarray.push([tl, dsc]);
+            localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray))
+          }
+        });
     </script>
   </body>
 </html>
