@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
    
-
     <title>To-Do-List</title>
   </head>
   <body>
@@ -22,7 +21,7 @@
                 <textarea class="form-control" id="description" rows="3"></textarea>
             </div>
             <br>
-            <button type="submit" id="submitbtn" class="btn btn-primary">Add to List</button>
+            <button type="button" id="submitbtn" class="btn btn-primary">Add to List</button>
           </form>
           <div id="items" class="my-3">
               <h2>Your Tasks</h2>
@@ -35,7 +34,7 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="tablebody">
                   <tr>
                     <th scope="row">1</th>
                     <td>Go to The Gym</td>
@@ -48,9 +47,8 @@
     </div>
  
     <script>
-        submitbtn = document.getElementById("submitbtn")
-        submitbtn.addEventListener("click", ()=>{
-          console.log("Updating List")
+      function update() {
+        console.log("Updating List");
           tl = document.getElementById("title").value;
           dsc = document.getElementById("description").value;
           if(localStorage.getItem("itemsjson")==null){
@@ -64,7 +62,35 @@
             itemjsonarray.push([tl, dsc]);
             localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray))
           }
-        });
+
+          //Table
+
+          let tablebody = document.getElementById("tablebody");
+          let str = "";
+          itemjsonarray.forEach((element, index) => {
+            str +=`
+            <tr>
+                <th scope="row">${index + 1}</th>
+                <td>${element[0]}</td>
+                <td>${element[1]}</td>
+                <td><button class="btn btn-sm btn-primary" onclick="deleted(${index})" >Delete</button></td>
+            </tr>`;
+          });
+          tablebody.innerHTML = str;
+
+      }
+        submitbtn = document.getElementById("submitbtn");
+        submitbtn.addEventListener("click",update);
+        update();
+
+        function deleted(iteminx){
+          console.log("Delete",iteminx);
+          itemjsonarraystr = localStorage.getItem("itemsjson")
+          itemjsonarray = JSON.parse(itemjsonarraystr);
+          //Delete And Save Item
+          localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray));
+          update();
+        }
     </script>
   </body>
 </html>
