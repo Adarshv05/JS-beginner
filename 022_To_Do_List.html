@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-   
+
+
     <title>To-Do-List</title>
   </head>
   <body>
@@ -21,7 +21,8 @@
                 <textarea class="form-control" id="description" rows="3"></textarea>
             </div>
             <br>
-            <button type="button" id="submitbtn" class="btn btn-primary">Add to List</button>
+            <button id="submitbtn" class="btn btn-primary">Add to List</button>
+            <button class="btn btn-primary" onclick="clearstorage()">Clear List</button>
           </form>
           <div id="items" class="my-3">
               <h2>Your Tasks</h2>
@@ -47,7 +48,7 @@
     </div>
  
     <script>
-      function update() {
+      function ggupdate() {
         console.log("Updating List");
           tl = document.getElementById("title").value;
           dsc = document.getElementById("description").value;
@@ -61,6 +62,17 @@
             itemjsonarray = JSON.parse(itemjsonarraystr);
             itemjsonarray.push([tl, dsc]);
             localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray))
+          }
+          update();
+      }
+      function update(){
+        if(localStorage.getItem("itemsjson")==null){
+            itemjsonarray = [];
+            localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray))
+          }
+        else{
+            itemjsonarraystr = localStorage.getItem("itemsjson")
+            itemjsonarray = JSON.parse(itemjsonarraystr);
           }
 
           //Table
@@ -80,16 +92,25 @@
 
       }
         submitbtn = document.getElementById("submitbtn");
-        submitbtn.addEventListener("click",update);
+        submitbtn.addEventListener("click", ggupdate);
         update();
 
-        function deleted(iteminx){
-          console.log("Delete",iteminx);
+        function deleted(itemIndex){
+          console.log("Delete",itemIndex);
           itemjsonarraystr = localStorage.getItem("itemsjson")
           itemjsonarray = JSON.parse(itemjsonarraystr);
           //Delete And Save Item
+          itemjsonarray.splice(itemIndex, 1);
           localStorage.setItem("itemsjson", JSON.stringify(itemjsonarray));
           update();
+        }
+
+        function clearstorage(){
+          if(confirm("All the list items will be deleted")){
+          console.log("Clearing");
+          localStorage.clear();
+          update()
+          }
         }
     </script>
   </body>
